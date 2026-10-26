@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30-Day Android Developer Roadmap Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-card: #162032;
+      --surface-border: #1f2d45;
+      --text: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #3ddc84; /* Android green */
+      --accent-glow: rgba(61, 220, 132, 0.2);
+      --accent-hover: #32c473;
+      --phase1: #38bdf8;
+      --phase2: #a855f7;
+      --phase3: #f59e0b;
+      --phase4: #10b981;
+      --phase5: #ec4899;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.5;
+      padding: 24px 16px 80px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: rgba(61, 220, 132, 0.1);
+      border: 1px solid rgba(61, 220, 132, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Stats Card */
+    .stats-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .stats-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .progress-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .progress-percent {
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #1f2937;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3ddc84, #38bdf8);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .stats-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+
+    .reset-btn:hover {
+      color: #ef4444;
+    }
+
+    /* Phase Filter Tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      border-color: #3b4d6b;
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Day Card */
+    .days-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .day-card {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .day-card.completed {
+      border-color: rgba(61, 220, 132, 0.4);
+      background: rgba(17, 24, 39, 0.6);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #4b5563;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .day-card.completed .custom-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #090d16;
+    }
+
+    .day-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #1f293d;
+      color: #cbd5e1;
+    }
+
+    .day-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .day-card.completed .day-title {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .phase-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Phase-specific colors */
+    .p-1 { color: var(--phase1); background: rgba(56, 189, 248, 0.12); }
+    .p-2 { color: var(--phase2); background: rgba(168, 85, 247, 0.12); }
+    .p-3 { color: var(--phase3); background: rgba(245, 158, 11, 0.12); }
+    .p-4 { color: var(--phase4); background: rgba(16, 185, 129, 0.12); }
+    .p-5 { color: var(--phase5); background: rgba(236, 72, 153, 0.12); }
+
+    .card-body {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.88rem;
+    }
+
+    .detail-section {
+      margin-bottom: 8px;
+    }
+
+    .detail-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 2px;
+    }
+
+    .detail-content {
+      color: #cbd5e1;
+    }
+
+    .interview-note {
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.08);
+      border-left: 2px solid #fbbf24;
+      padding: 6px 10px;
+      border-radius: 0 4px 4px 0;
+      margin-top: 6px;
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">Interview Preparation</div>
+      <h1>30-Day Modern Android Roadmap</h1>
+      <p class="subtitle">Jetpack Compose • Kotlin Coroutines & Flow • Hilt DI • Room • Architecture</p>
+    </header>
+
+    <!-- Stats & Progress -->
+    <div class="stats-card">
+      <div class="stats-top">
+        <span class="progress-text">Progress Tracker</span>
+        <span class="progress-percent" id="percentText">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="stats-bottom">
+        <span id="completedCounter">0 of 30 days completed</span>
+        <button class="reset-btn" onclick="resetAll()">Reset Progress</button>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="tab-btn active" onclick="setFilter('all', this)">All Days (30)</button>
+      <button class="tab-btn" onclick="setFilter(1, this)">Phase 1: Coroutines</button>
+      <button class="tab-btn" onclick="setFilter(2, this)">Phase 2: Compose</button>
+      <button class="tab-btn" onclick="setFilter(3, this)">Phase 3: Hilt</button>
+      <button class="tab-btn" onclick="setFilter(4, this)">Phase 4: Architecture</button>
+      <button class="tab-btn" onclick="setFilter(5, this)">Phase 5: Polish</button>
+    </div>
+
+    <!-- Days List -->
+    <div class="days-grid" id="daysList"></div>
+  </div>
+
+  <script>
+    const roadmapData = [
+      // Phase 1
+      { day: 1, phase: 1, phaseName: "Kotlin & Coroutines", title: "Advanced Kotlin Essentials", topics: "Sealed classes vs sealed interfaces, data/inline classes, scope functions (let, run, apply).", exercise: "Build a generic NetworkResult<T> sealed interface wrapper with Success, Error, and Loading.", interview: "Why prefer sealed interfaces over sealed classes in Kotlin 1.5+?" },
+      { day: 2, phase: 1, phaseName: "Kotlin & Coroutines", title: "Concurrency & Coroutine Scope", topics: "Threads vs coroutines, CoroutineScope, launch vs async, Job hierarchy, structured concurrency.", exercise: "Execute parallel tasks with awaitAll() and log thread IDs to see context switching.", interview: "What is structured concurrency and how does it prevent thread leaks?" },
+      { day: 3, phase: 1, phaseName: "Kotlin & Coroutines", title: "Dispatchers & Context", topics: "Dispatchers.Main, IO, Default, Unconfined, withContext(), CoroutineContext inheritance.", exercise: "Write a background file-read task switching to Main dispatcher for UI notification.", interview: "Why should you inject CoroutineDispatchers instead of hardcoding Dispatchers.IO?" },
+      { day: 4, phase: 1, phaseName: "Kotlin & Coroutines", title: "Cancellation & Exceptions", topics: "Cooperative cancellation (isActive, ensureActive), NonCancellable, supervisorScope vs coroutineScope.", exercise: "Trigger an exception in a child job under supervisorScope and inspect sibling survival.", interview: "Explain the difference between coroutineScope and supervisorScope when child fails." },
+      { day: 5, phase: 1, phaseName: "Kotlin & Coroutines", title: "Kotlin Flows (Cold Streams)", topics: "Cold streams, flow builder, intermediate operators (map, filter, transform), flowOn context switching.", exercise: "Build a mock polling flow that emits items every 1s using flow { emit() } and flowOn(Dispatchers.IO).", interview: "How does flowOn affect upstream execution without affecting downstream collectors?" },
+      { day: 6, phase: 1, phaseName: "Kotlin & Coroutines", title: "Hot Streams (StateFlow & SharedFlow)", topics: "Hot vs cold streams, MutableStateFlow, MutableSharedFlow, replay cache, BufferOverflow policies.", exercise: "Create an event bus with SharedFlow for one-off toast messages and StateFlow for screen UI state.", interview: "Why does StateFlow require an initial value, while SharedFlow does not?" },
+      { day: 7, phase: 1, phaseName: "Kotlin & Coroutines", title: "Advanced Flow Operators", topics: "combine, zip, flatMapLatest, debounce, distinctUntilChanged.", exercise: "Build a live search simulation with debounce(300ms) and flatMapLatest to cancel obsolete queries.", interview: "What is the difference between flatMapConcat, flatMapMerge, and flatMapLatest?" },
+      { day: 8, phase: 1, phaseName: "Kotlin & Coroutines", title: "Phase 1 Drill & Coroutine Review", topics: "Consolidate all coroutine/flow topics with practice interview questions.", exercise: "Practice answering top 10 coroutine questions out loud without notes.", interview: "Mock interview: Explain coroutine cancellation under the hood." },
+
+      // Phase 2
+      { day: 9, phase: 2, phaseName: "Jetpack Compose", title: "Declarative Paradigm & Layouts", topics: "Declarative vs imperative UI, @Composable functions, Column, Row, Box, Scaffold.", exercise: "Create a user profile card component using nested Rows, Columns, and an avatar badge.", interview: "What is recomposition and how does Compose skip unchanged nodes?" },
+      { day: 10, phase: 2, phaseName: "Jetpack Compose", title: "State, Remember, & Recomposition", topics: "remember, rememberSaveable, mutableStateOf, State Hoisting principles.", exercise: "Build an editable counter and text input where state is hoisted cleanly to the parent caller.", interview: "What is the difference between remember and rememberSaveable?" },
+      { day: 11, phase: 2, phaseName: "Jetpack Compose", title: "Dynamic Lists (LazyColumn)", topics: "LazyColumn, LazyRow, items(), itemsIndexed(), unique item keys, content padding.", exercise: "Create an item feed list specifying key = { it.id } and observe recomposition on deletion.", interview: "Why is passing a unique key critical for LazyColumn performance?" },
+      { day: 12, phase: 2, phaseName: "Jetpack Compose", title: "Side Effects I (LaunchedEffect)", topics: "LaunchedEffect, rememberCoroutineScope, rememberUpdatedState.", exercise: "Trigger a one-time snackbar display on screen launch using LaunchedEffect(Unit).", interview: "When should you use LaunchedEffect vs rememberCoroutineScope?" },
+      { day: 13, phase: 2, phaseName: "Jetpack Compose", title: "Side Effects II & Derived State", topics: "DisposableEffect, SideEffect, produceState, derivedStateOf.", exercise: "Use derivedStateOf to show a 'Scroll to top' button only after LazyColumn scrolls past 4 items.", interview: "What problem does derivedStateOf solve compared to raw State calculation?" },
+      { day: 14, phase: 2, phaseName: "Jetpack Compose", title: "Compose Performance & Stability", topics: "@Stable, @Immutable, compiler metrics, smart skipping, unstable lambda pitfalls.", exercise: "Wrap a raw Kotlin List in an @Immutable wrapper to enable Compose skipping.", interview: "Why does passing a standard List<T> cause unnecessary recompositions in Compose?" },
+      { day: 15, phase: 2, phaseName: "Jetpack Compose", title: "Navigation Compose", topics: "NavHost, NavController, composable routes, type-safe arguments, back stack.", exercise: "Build a 2-screen flow passing an integer ID from a list screen to a detail screen.", interview: "How do you handle single-top navigation to avoid duplicate screens on double clicks?" },
+      { day: 16, phase: 2, phaseName: "Jetpack Compose", title: "Theming & Modifier Chaining", topics: "MaterialTheme, ColorScheme, Typography, Modifier ordering rules (padding vs clickable).", exercise: "Verify the visual difference between Modifier.padding().clickable() vs .clickable().padding().", interview: "Why does Modifier order matter in Compose?" },
+      { day: 17, phase: 2, phaseName: "Jetpack Compose", title: "Phase 2 Drill & Compose Review", topics: "Consolidate Compose fundamentals, state hoisting, and performance metrics.", exercise: "Inspect a composable screen using Android Studio Layout Inspector to verify recomposition counts.", interview: "Mock interview: How do you optimize an app with janky LazyColumn scrolling?" },
+
+      // Phase 3
+      { day: 18, phase: 3, phaseName: "Hilt DI", title: "Inversion of Control & Hilt Basics", topics: "Dependency injection principles, @HiltAndroidApp, @AndroidEntryPoint, @Inject constructor.", exercise: "Add Hilt to an Android project and inject an AnalyticsTracker into MainActivity.", interview: "What problem does compile-time DI (Hilt) solve compared to runtime reflection (Koin)?" },
+      { day: 19, phase: 3, phaseName: "Hilt DI", title: "Modules: @Provides vs @Binds", topics: "@Module, @InstallIn(SingletonComponent::class), @Provides, @Binds abstract methods.", exercise: "Bind an AuthRepository interface to AuthRepositoryImpl using @Binds.", interview: "Why is @Binds more efficient than @Provides for interface implementations?" },
+      { day: 20, phase: 3, phaseName: "Hilt DI", title: "Scopes & Component Lifecycles", topics: "@Singleton, @ActivityScoped, @ViewModelScoped, un-scoped instances.", exercise: "Inject a ViewModelScoped dependency and verify it gets recreated on a new ViewModel instance.", interview: "What happens if you inject an @ActivityScoped class into a @Singleton class?" },
+      { day: 21, phase: 3, phaseName: "Hilt DI", title: "Qualifiers & Named Dependencies", topics: "@Qualifier, @Named, distinguishing multiple instances of the same type.", exercise: "Create two OkHttpClient providers: @AuthClient (with token interceptor) and @PublicClient.", interview: "Why are custom @Qualifier annotations preferred over string-based @Named?" },
+      { day: 22, phase: 3, phaseName: "Hilt DI", title: "Hilt with ViewModels & Compose", topics: "@HiltViewModel, hiltViewModel() within Composable destinations, SavedStateHandle injection.", exercise: "Inject a repository and SavedStateHandle directly into a Compose-bound ViewModel.", interview: "How does hiltViewModel() manage ViewModel scoping across navigation routes?" },
+
+      // Phase 4
+      { day: 23, phase: 4, phaseName: "Architecture & Data", title: "Networking (Retrofit + OkHttp)", topics: "Retrofit service definitions, JSON serialization, auth interceptors, HTTP status error handling.", exercise: "Write a custom OkHttp Interceptor that attaches a Bearer JWT header to outgoing requests.", interview: "How do you handle JWT token expiry and automatic refresh via OkHttp Authenticator?" },
+      { day: 24, phase: 4, phaseName: "Architecture & Data", title: "Local Persistence with Room", topics: "@Entity, @Dao, @Database, reactive Room queries returning Flow<List<T>>.", exercise: "Define a Room entity with autoGenerate primary key and write Dao queries returning Flow.", interview: "How does Room notify observers when database records change?" },
+      { day: 25, phase: 4, phaseName: "Architecture & Data", title: "Offline-First Repository Pattern", topics: "Single Source of Truth (SSOT), network-bound caching strategy, Room + Retrofit sync.", exercise: "Build a repository that emits cached Room data first while syncing fresh data from network.", interview: "What is an offline-first architecture and how do you handle cache invalidation?" },
+      { day: 26, phase: 4, phaseName: "Architecture & Data", title: "Clean Architecture & MVI Pattern", topics: "Data layer, Domain layer (UseCases), Presentation layer (UIState, UIEvent, ViewModel).", exercise: "Structure your capstone project into feature modules or layered packages.", interview: "What is the difference between MVVM and MVI? Why use an immutable UIState data class?" },
+      { day: 27, phase: 4, phaseName: "Architecture & Data", title: "Unit Testing Coroutines & ViewModels", topics: "TestScope, StandardTestDispatcher, runTest, MockK, testing StateFlow emissions.", exercise: "Write a unit test asserting ViewModel transitions from Loading to Success state.", interview: "Why must you replace Dispatchers.Main with a TestDispatcher in unit tests?" },
+
+      // Phase 5
+      { day: 28, phase: 5, phaseName: "System Design & Polish", title: "Mobile System Design Basics", topics: "Designing scalable features: Infinite feeds, image caching, offline queuing, push notifications.", exercise: "Sketch the system design for an offline-capable Instagram-like feed.", interview: "How would you design a client-side offline retry queue for failed network requests?" },
+      { day: 29, phase: 5, phaseName: "System Design & Polish", title: "Performance Profiling & ProGuard", topics: "Memory leaks (LeakCanary), Android Studio Memory Profiler, R8 rules, APK vs AAB.", exercise: "Run the Memory Profiler on your device to inspect heap dumps and verify 0 leaks.", interview: "What causes an Activity context leak, and how does LeakCanary detect it?" },
+      { day: 30, phase: 5, phaseName: "System Design & Polish", title: "Mock Interview & Portfolio GitHub", topics: "GitHub README structure, architecture diagrams, demo GIF, final interview review.", exercise: "Record a 10s GIF of your finished capstone app and push it to your GitHub README.", interview: "Final review: Walk me through your capstone app architecture and technical trade-offs." }
+    ];
+
+    let currentFilter = 'all';
+    let completedDays = new Set(JSON.parse(localStorage.getItem('android_roadmap_completed') || '[]'));
+
+    function saveState() {
+      localStorage.setItem('android_roadmap_completed', JSON.stringify(Array.from(completedDays)));
+      updateMetrics();
+    }
+
+    function toggleDay(dayNum) {
+      if (completedDays.has(dayNum)) {
+        completedDays.delete(dayNum);
+      } else {
+        completedDays.add(dayNum);
+      }
+      saveState();
+      renderDays();
+    }
+
+    function updateMetrics() {
+      const count = completedDays.size;
+      const pct = Math.round((count / 30) * 100);
+      document.getElementById('percentText').innerText = pct + '%';
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('completedCounter').innerText = `${count} of 30 days completed`;
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDays();
+    }
+
+    function resetAll() {
+      if (confirm("Reset all 30 days of progress?")) {
+        completedDays.clear();
+        saveState();
+        renderDays();
+      }
+    }
+
+    function renderDays() {
+      const listEl = document.getElementById('daysList');
+      listEl.innerHTML = '';
+
+      const filtered = roadmapData.filter(item => {
+        if (currentFilter === 'all') return true;
+        return item.phase === currentFilter;
+      });
+
+      filtered.forEach(item => {
+        const isDone = completedDays.has(item.day);
+        const card = document.createElement('div');
+        card.className = `day-card ${isDone ? 'completed' : ''}`;
+
+        card.innerHTML = `
+          <div class="card-header" onclick="toggleDay(${item.day})">
+            <div class="card-meta">
+              <div class="custom-checkbox">
+                ${isDone ? '✓' : ''}
+              </div>
+              <span class="day-tag">Day ${item.day < 10 ? '0' + item.day : item.day}</span>
+              <span class="day-title">${item.title}</span>
+            </div>
+            <span class="phase-badge p-${item.phase}">Phase ${item.phase}</span>
+          </div>
+          <div class="card-body">
+            <div class="detail-section">
+              <div class="detail-label">Topics</div>
+              <div class="detail-content">${item.topics}</div>
+            </div>
+            <div class="detail-section">
+              <div class="detail-label">Hands-on Exercise</div>
+              <div class="detail-content">${item.exercise}</div>
+            </div>
+            <div class="interview-note">
+              <strong>Interview Focus:</strong> ${item.interview}
+            </div>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    // Initialize
+    updateMetrics();
+    renderDays();
+  </script>
+</body>
+</html>
