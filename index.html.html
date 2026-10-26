@@ -835,3 +835,66 @@
       filtered.forEach(item => {
         const isDone = completedDays.has(item.day);
         const isExpanded = expandedDays.has(item.day);
+        const card = document.createElement('div');
+        card.className = `day-card ${isDone ? 'completed' : ''} ${isExpanded ? 'expanded' : ''}`;
+
+        // Questions HTML
+        const qaHtml = item.questions.map(q => `
+          <li>
+            <div class="qa-q">Q: ${q.q}</div>
+            <div class="qa-hint">A: ${q.h}</div>
+          </li>
+        `).join('');
+
+        // Concepts HTML
+        const conceptsHtml = item.concepts.map(c => `<li>${c}</li>`).join('');
+
+        card.innerHTML = `
+          <div class="card-header" onclick="toggleExpandCard(${item.day})">
+            <div class="card-meta">
+              <div class="checkbox-wrap" onclick="toggleDayComplete(${item.day}, event)">
+                <div class="custom-checkbox">
+                  ${isDone ? '✓' : ''}
+                </div>
+              </div>
+              <span class="day-tag">Day ${item.day < 10 ? '0' + item.day : item.day}</span>
+              <span class="day-title">${item.title}</span>
+            </div>
+            <div class="header-right">
+              <span class="phase-badge p-${item.phase}">Phase ${item.phase}</span>
+              <span class="chevron">▼</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="detail-block">
+              <div class="detail-heading">Core Concepts to Master</div>
+              <ul class="concept-list">
+                ${conceptsHtml}
+              </ul>
+            </div>
+            <div class="detail-block">
+              <div class="detail-heading">Hands-on Implementation Task</div>
+              <div class="hands-on-box">
+                ${item.exercise}
+              </div>
+            </div>
+            <div class="detail-block">
+              <div class="detail-heading">Interview Screening & Deep-Dive Questions</div>
+              <div class="qa-box">
+                <ul class="qa-list">
+                  ${qaHtml}
+                </ul>
+              </div>
+            </div>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    // Initialize
+    updateMetrics();
+    renderDays();
+  </script>
+</body>
+</html>
