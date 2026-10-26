@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30-Day Android Interview Roadmap + Gemini AI Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --surface: #111827;
+      --surface-card: #151f32;
+      --surface-border: #1e293b;
+      --surface-border-hover: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #3ddc84;
+      --accent-glow: rgba(61, 220, 132, 0.15);
+      --ai-purple: #a855f7;
+      --ai-purple-glow: rgba(168, 85, 247, 0.15);
+      --phase1: #38bdf8;
+      --phase2: #c084fc;
+      --phase3: #fbbf24;
+      --phase4: #34d399;
+      --phase5: #f472b6;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.55;
+      padding: 24px 16px 90px;
+    }
+
+    .container { max-width: 980px; margin: 0 auto; }
+
+    header { margin-bottom: 20px; }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid rgba(61, 220, 132, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    h1 { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 8px; }
+    .subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* API Key Box */
+    .api-card {
+      background: #131226;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .api-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #d8b4fe;
+    }
+
+    .api-input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .api-input {
+      flex: 1;
+      background: #090d16;
+      border: 1px solid #2d2b55;
+      border-radius: 8px;
+      color: #fff;
+      padding: 9px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+    .api-input:focus { outline: none; border-color: var(--ai-purple); }
+
+    .api-btn {
+      background: var(--ai-purple);
+      border: none;
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .api-btn:hover { opacity: 0.9; }
+
+    .api-btn-clear {
+      background: transparent;
+      border: 1px solid #3b2a5a;
+      color: #e2e8f0;
+    }
+    .api-btn-clear:hover { background: rgba(239, 68, 68, 0.15); border-color: #ef4444; color: #ef4444; }
+
+    .api-hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .api-hint a { color: var(--ai-purple); text-decoration: none; }
+    .api-hint a:hover { text-decoration: underline; }
+
+    /* Progress Stats */
+    .stats-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+    .stats-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .progress-text { font-size: 1.05rem; font-weight: 700; }
+    .progress-percent { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; }
+    .progress-track { width: 100%; height: 10px; background: #1e293b; border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #3ddc84, #38bdf8); border-radius: 999px; transition: width 0.3s ease; }
+    .stats-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-dim); }
+    .reset-btn { background: transparent; border: none; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; text-decoration: underline; }
+    .reset-btn:hover { color: #f87171; }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .filter-tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .tab-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { border-color: var(--surface-border-hover); color: var(--text); }
+    .tab-btn.active { background: var(--accent); color: #0a0e17; border-color: var(--accent); font-weight: 700; }
+    .toggle-all-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .toggle-all-btn:hover { color: var(--text); border-color: var(--surface-border-hover); }
+
+    /* Cards */
+    .days-grid { display: flex; flex-direction: column; gap: 14px; }
+    .day-card {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .day-card.completed {
+      border-color: rgba(61, 220, 132, 0.4);
+      background: rgba(17, 24, 39, 0.6);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .card-header:hover { background: rgba(255, 255, 255, 0.02); }
+
+    .card-meta { display: flex; align-items: center; gap: 12px; flex: 1; }
+    .checkbox-wrap { padding: 4px; cursor: pointer; display: flex; align-items: center; }
+    .custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      font-size: 0.8rem;
+    }
+    .day-card.completed .custom-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0e17;
+      font-weight: 800;
+    }
+
+    .day-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #1e293b;
+      color: #cbd5e1;
+    }
+    .day-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .day-card.completed .day-title { color: var(--text-muted); text-decoration: line-through; }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .phase-badge { font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+    .p-1 { color: var(--phase1); background: rgba(56, 189, 248, 0.12); }
+    .p-2 { color: var(--phase2); background: rgba(192, 132, 252, 0.12); }
+    .p-3 { color: var(--phase3); background: rgba(251, 191, 36, 0.12); }
+    .p-4 { color: var(--phase4); background: rgba(52, 211, 153, 0.12); }
+    .p-5 { color: var(--phase5); background: rgba(244, 114, 182, 0.12); }
+
+    .chevron { color: var(--text-dim); transition: transform 0.2s ease; font-size: 0.8rem; }
+    .day-card.expanded .chevron { transform: rotate(180deg); }
+
+    /* Card Details */
+    .card-body {
+      display: none;
+      padding: 0 18px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+    }
+    .day-card.expanded .card-body { display: block; }
+
+    .detail-block { margin-top: 14px; }
+    .detail-heading {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .concept-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .concept-list li {
+      position: relative;
+      padding-left: 18px;
+      color: #cbd5e1;
+      font-size: 0.88rem;
+    }
+    .concept-list li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .hands-on-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #e2e8f0;
+      font-size: 0.86rem;
+    }
+
+    .qa-box {
+      background: rgba(251, 191, 36, 0.04);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .qa-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .qa-q { font-weight: 600; color: #fde047; margin-bottom: 2px; }
+    .qa-hint { color: #94a3b8; font-size: 0.82rem; }
+
+    /* Gemini Interactive Toolbar inside each card */
+    .ai-action-bar {
+      margin-top: 16px;
+      padding: 12px;
+      background: rgba(168, 85, 247, 0.06);
+      border: 1px dashed rgba(168, 85, 247, 0.35);
+      border-radius: 8px;
+    }
+    .ai-bar-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #c084fc;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ai-buttons-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .ai-chip-btn {
+      background: #1e1b4b;
+      border: 1px solid #4338ca;
+      color: #c7d2fe;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ai-chip-btn:hover {
+      background: #312e81;
+      border-color: #6366f1;
+      color: #fff;
+    }
+    .ai-custom-prompt-row {
+      display: flex;
+      gap: 8px;
+    }
+    .ai-custom-input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+    }
+    .ai-custom-input:focus { outline: none; border-color: var(--ai-purple); }
+
+    /* AI Response Box */
+    .ai-response-box {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      background: #090d16;
+      border: 1px solid #3b2a5a;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+    .ai-response-box code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #1e293b;
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">Interview Prep + Local AI Assistant</div>
+      <h1>30-Day Modern Android Roadmap</h1>
+      <p class="subtitle">Jetpack Compose • Kotlin Coroutines & Flow • Hilt DI • Room SSOT • System Design</p>
+    </header>
+
+    <!-- Local Gemini API Key Section -->
+    <div class="api-card">
+      <div class="api-card-header">
+        <span>🤖 Gemini AI Tutor (Client-Side Stored Only)</span>
+        <span id="keyStatus" style="font-size: 0.75rem; color: #ef4444;">● No Key Saved</span>
+      </div>
+      <div class="api-input-row">
+        <input type="password" id="geminiApiKey" class="api-input" placeholder="Paste your Google Gemini API Key (AI Studio)..." />
+        <button class="api-btn" onclick="saveApiKey()">Save Key</button>
+        <button class="api-btn api-btn-clear" onclick="clearApiKey()">Clear</button>
+      </div>
+      <div class="api-hint">
+        Your key is stored strictly in your browser's <code>localStorage</code> and called directly against Google's API endpoint. It never touches GitHub or any intermediary backend. Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+      </div>
+    </div>
+
+    <!-- Stats Card -->
+    <div class="stats-card">
+      <div class="stats-top">
+        <span class="progress-text">Preparation Completion</span>
+        <span class="progress-percent" id="percentText">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="stats-bottom">
+        <span id="completedCounter">0 of 30 days completed</span>
+        <button class="reset-btn" onclick="resetAll()">Reset All Progress</button>
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="filter-tabs">
+        <button class="tab-btn active" onclick="setFilter('all', this)">All Days (30)</button>
+        <button class="tab-btn" onclick="setFilter(1, this)">P1: Coroutines</button>
+        <button class="tab-btn" onclick="setFilter(2, this)">P2: Compose</button>
+        <button class="tab-btn" onclick="setFilter(3, this)">P3: Hilt</button>
+        <button class="tab-btn" onclick="setFilter(4, this)">P4: Architecture</button>
+        <button class="tab-btn" onclick="setFilter(5, this)">P5: System Design</button>
+      </div>
+      <button class="toggle-all-btn" onclick="toggleExpandAll()">Expand / Collapse All</button>
+    </div>
+
+    <!-- Days Grid -->
+    <div class="days-grid" id="daysList"></div>
+  </div>
+
+  <script>
+    const roadmapData = [
+      // PHASE 1
+      {
+        day: 1, phase: 1, phaseName: "Kotlin & Coroutines", title: "Advanced Kotlin Essentials for Android",
+        concepts: [
+          "Sealed classes vs sealed interfaces: why interfaces allow multiple inheritance and better model polymorphism without class hierarchy bloat.",
+          "Inline value classes (@JvmInline value class Id(val value: String)): zero-allocation type safety at compile time.",
+          "Scope functions memory & return conventions: let/run (returns lambda result), apply/also (returns context object), with.",
+          "Kotlin delegation pattern: Property delegates (by lazy, Delegates.observable) and class delegation (by)."
+        ],
+        exercise: "Create a generic NetworkResult<out T> sealed interface with Success(val data: T), Error(val exception: Throwable), and Loading states, ensuring variant covariant typing.",
+        questions: [
+          { q: "Why were sealed interfaces introduced in Kotlin 1.5 when we already had sealed classes?", h: "Sealed classes enforce single class inheritance, whereas sealed interfaces allow a class/object to implement multiple sealed hierarchies without inheriting from an abstract class." },
+          { q: "What is an inline/value class, and what does it compile to in Java bytecode?", h: "At runtime, it unwraps to the underlying primitive or reference type, eliminating heap allocation overhead unless boxed via generics." },
+          { q: "When would you pick 'apply' over 'also'?", h: "'apply' exposes the receiver as 'this' (best for object configuration); 'also' exposes it as 'it' (best for side effects like logging without mutating the object)." }
+        ]
+      },
+      {
+        day: 2, phase: 1, phaseName: "Kotlin & Coroutines", title: "Concurrency Foundations & CoroutineScope",
+        concepts: [
+          "Threads vs Coroutines: OS kernel scheduling vs cooperative user-space state machines (Continuation-Passing Style).",
+          "Structured Concurrency: How parent jobs track child jobs, propagate cancellation downwards, and await child completion before finishing.",
+          "launch (fire-and-forget, returns Job) vs async (returns Deferred<T>, exposes .await()).",
+          "GlobalScope hazards: Why GlobalScope creates unmanaged memory leaks and breaks structured cancellation."
+        ],
+        exercise: "Execute 3 mock network calls concurrently using async/awaitAll() and log active Thread names to observe work distribution.",
+        questions: [
+          { q: "Why are coroutines described as 'lightweight threads'?", h: "They run on a shared thread pool and suspend via compiler-generated state machines (continuations) rather than blocking underlying OS threads." },
+          { q: "What happens if an unhandled exception is thrown inside a child coroutine created with launch vs async?", h: "With 'launch', it immediately propagates up the hierarchy and crashes the parent; with 'async', the exception is stored in Deferred and re-thrown when .await() is invoked." },
+          { q: "What is structured concurrency and why does Android require it?", h: "It binds the lifecycle of background tasks to UI lifecycle scopes (like viewModelScope), guaranteeing tasks get cancelled when screens are destroyed." }
+        ]
+      },
+      {
+        day: 3, phase: 1, phaseName: "Kotlin & Coroutines", title: "Dispatchers, Context, & Thread Switching",
+        concepts: [
+          "Standard Dispatchers: Dispatchers.Main (UI thread), Dispatchers.IO (elastic thread pool for disk/network), Dispatchers.Default (fixed CPU-bound pool equal to CPU core count).",
+          "withContext(Dispatcher) mechanics: Safe context switching without callback nesting or thread hopping leaks.",
+          "CoroutineContext composition: Combining Job + Dispatcher + CoroutineName + CoroutineExceptionHandler using the + operator.",
+          "Dependency injection of Dispatchers: Why repositories must receive CoroutineDispatcher via constructor."
+        ],
+        exercise: "Write a repository function that reads a local mock file on Dispatchers.IO and formats text using Dispatchers.Default, injected via Hilt.",
+        questions: [
+          { q: "Why should you never hardcode Dispatchers.IO directly inside a Repository or UseCase class?", h: "Hardcoding dispatchers makes unit testing deterministic execution impossible because tests need TestDispatcher (StandardTestDispatcher/UnconfinedTestDispatcher)." },
+          { q: "How is Dispatchers.IO sized internally compared to Dispatchers.Default?", h: "Default is capped at the number of CPU cores (min 2); IO defaults to 64 threads or core count (whichever is larger) because blocking I/O doesn't consume CPU cycles." },
+          { q: "What does withContext actually do under the hood?", h: "It intercepts the current continuation, suspends the caller, switches execution to the specified dispatcher, and resumes the caller on the original dispatcher once finished." }
+        ]
+      },
+      {
+        day: 4, phase: 1, phaseName: "Kotlin & Coroutines", title: "Cooperative Cancellation & Exception Propagation",
+        concepts: [
+          "Cooperative cancellation: Coroutines do not terminate forcefully; they must check isActive, call ensureActive(), or invoke standard suspending functions (delay, yield).",
+          "NonCancellable context: Using withContext(NonCancellable) inside finally blocks to execute essential cleanup (flushing sockets, closing DB cursors).",
+          "supervisorScope vs coroutineScope: Why supervisorScope prevents a failing child from tearing down other concurrent sibling tasks.",
+          "CoroutineExceptionHandler: Catching uncaught root exceptions and its limitations (does not catch exceptions from async child coroutines)."
+        ],
+        exercise: "Build a multi-download simulation where 1 task fails with an IOException inside a supervisorScope, confirming the other 2 downloads complete safely.",
+        questions: [
+          { q: "Why doesn't a busy 'while(true)' loop stop when you call job.cancel()?", h: "Cancellation is cooperative. If code contains no suspension points or isActive checks, the CPU thread remains occupied and never yields to handle cancellation." },
+          { q: "What is the crucial difference between coroutineScope and supervisorScope?", h: "In coroutineScope, a failure in any child immediately cancels all siblings and the parent. In supervisorScope, a child failure does not affect siblings or parent." },
+          { q: "Why should you never catch 'CancellationException' generically as 'catch (e: Exception)' without re-throwing it?", h: "Catching CancellationException swallows the signal that triggers structured teardown, leaving coroutines running in an orphaned or zombie state." }
+        ]
+      },
+      {
+        day: 5, phase: 1, phaseName: "Kotlin & Coroutines", title: "Cold Streams & Kotlin Flows Core",
+        concepts: [
+          "Cold stream characteristics: The flow builder code does not execute until a terminal operator (collect, first, toList) is invoked.",
+          "Context preservation: Why emitting from a different dispatcher inside flow { } throws IllegalStateException, and how flowOn(Dispatcher) safely shifts upstream execution.",
+          "Intermediate operators: map, filter, transform, onStart, onCompletion, catch.",
+          "Exception transparency: Why .catch { } only catches exceptions happening upstream, never downstream collector exceptions."
+        ],
+        exercise: "Create a mock countdown timer Flow that emits numbers 10 down to 0, shifts upstream to Dispatchers.Default with flowOn, and catches exceptions with .catch {}.",
+        questions: [
+          { q: "What does it mean that Kotlin Flow is 'cold'?", h: "A cold stream produces data on-demand per collector. No network call or computation happens until collect() is actually called." },
+          { q: "What happens if you call withContext(Dispatchers.IO) inside a flow { emit(...) } block?", h: "Flow enforces context preservation and throws an IllegalStateException; you must use flowOn(Dispatchers.IO) instead." },
+          { q: "Where should the .catch {} operator be placed relative to intermediate operators?", h: "It only catches exceptions thrown upstream (above it). Any error thrown below it in subsequent operators or inside collect {} will not be caught." }
+        ]
+      },
+      {
+        day: 6, phase: 1, phaseName: "Kotlin & Coroutines", title: "Hot Streams: StateFlow vs SharedFlow",
+        concepts: [
+          "Hot streams: Producing events independently of whether any collector is actively observing.",
+          "StateFlow: Conflated, holds an explicit initial state, always returns current .value, drops duplicate identical emissions (distinctUntilChanged built-in).",
+          "SharedFlow: Event bus architecture, configurable replay cache, extraBufferCapacity, and BufferOverflow behavior (SUSPEND, DROP_OLDEST, DROP_LATEST).",
+          "Why StateFlow replaced LiveData: Multiplatform compatibility, native coroutine integration, and thread-safe immutability."
+        ],
+        exercise: "Build a UIState container using MutableStateFlow for view updates, alongside a Channel/SharedFlow for one-time SnackBar events.",
+        questions: [
+          { q: "What is the primary difference between StateFlow and SharedFlow?", h: "StateFlow is a state holder requiring an initial value that conflates duplicate updates; SharedFlow is a broadcast stream designed for transient events with customizable replay." },
+          { q: "Why is LiveData generally deprecated in favor of StateFlow in modern Android?", h: "StateFlow works cleanly across Kotlin Multiplatform, supports the rich Flow operator ecosystem, and integrates naturally with Compose state collection." },
+          { q: "What happens to emissions in SharedFlow if collectors are slow and the buffer overflows?", h: "It depends on onBufferOverflow: SUSPEND suspends the emitter; DROP_OLDEST discards the oldest item; DROP_LATEST discards the new incoming emission." }
+        ]
+      },
+      {
+        day: 7, phase: 1, phaseName: "Kotlin & Coroutines", title: "Advanced Flow Operators & Concurrency Control",
+        concepts: [
+          "Flow flattening: flatMapConcat (sequential), flatMapMerge (concurrent emissions), flatMapLatest (cancels previous transform when new value arrives).",
+          "Combining streams: combine (emits whenever either flow changes) vs zip (pairs emissions 1-to-1 strictly by index).",
+          "Backpressure management: debounce (throttles rapid inputs like search queries), sample, conflate (skips slow processing to always consume latest).",
+          "distinctUntilChanged: Preventing unnecessary downstream processing when upstream emits duplicate data."
+        ],
+        exercise: "Implement a live search query pipeline: debounce(300ms) -> distinctUntilChanged() -> flatMapLatest { query -> searchApi(query) }.",
+        questions: [
+          { q: "Explain the behavioral difference between flatMapLatest and flatMapMerge.", h: "flatMapLatest cancels the previously active inner flow whenever the outer flow emits a new value; flatMapMerge executes them concurrently up to a concurrency limit." },
+          { q: "How does 'combine' differ from 'zip' when working with two UI streams?", h: "combine fires whenever either stream produces a value, using the latest known value of the other; zip requires both streams to emit a matching index pair before proceeding." },
+          { q: "How does conflate() handle backpressure compared to buffer()?", h: "buffer stores pending emissions in memory; conflate discards intermediate unconsumed values, delivering only the newest value to the slow collector." }
+        ]
+      },
+      {
+        day: 8, phase: 1, phaseName: "Kotlin & Coroutines", title: "Phase 1 Drill & Coroutine Deep-Dive Review",
+        concepts: [
+          "Testing Coroutines: runTest, TestScope, StandardTestDispatcher (virtual time queuing) vs UnconfinedTestDispatcher (immediate eagerness).",
+          "Handling lifecycle in Android: repeatOnLifecycle(Lifecycle.State.STARTED) vs flowWithLifecycle in Fragments/Activities to prevent background resource leaks.",
+          "Thread safety in coroutines: Mutex vs Atomic primitives vs synchronized blocks (synchronized blocks block underlying threads and must be avoided).",
+          "Channels vs Flows: Hot communication pipelines for single-consumer queues vs declarative multicasting."
+        ],
+        exercise: "Write a unit test using runTest and advanceUntilIdle() to verify an asynchronous state transition from Loading to Success.",
+        questions: [
+          { q: "Why should you collect Flows using 'repeatOnLifecycle' instead of simply launching in 'lifecycleScope'?", h: "lifecycleScope.launch keeps collecting in the background when the app is backgrounded, wasting CPU/battery; repeatOnLifecycle cancels collection when the lifecycle drops below the specified state and restarts when resumed." },
+          { q: "Why should you never use Java's 'synchronized(lock)' inside a suspending coroutine?", h: "synchronized blocks the underlying OS worker thread from executing other coroutines. In coroutines, you must use Kotlin's non-blocking 'Mutex.withLock'." },
+          { q: "What is the difference between StandardTestDispatcher and UnconfinedTestDispatcher?", h: "StandardTestDispatcher queues coroutines and requires manual time control (advanceUntilIdle/advanceTimeBy); Unconfined runs eagerly without virtual time guarantees." }
+        ]
+      },
+
+      // PHASE 2
+      {
+        day: 9, phase: 2, phaseName: "Jetpack Compose", title: "Declarative Paradigm & Compose Mechanics",
+        concepts: [
+          "Declarative UI vs Imperative View hierarchy: Eliminating findViewById, View binding, and manual setVisibility mutations.",
+          "The Compose phases: Composition (what to show), Layout (where to place it via Measure/Layout), Drawing (how to render via Canvas).",
+          "Standard layout containers: Box (z-index stacking), Column (vertical stack), Row (horizontal stack), Scaffold (Material screen structure).",
+          "Modifier chaining rules: Evaluation from top to bottom (padding before clickable affects hit target; clickable before padding makes the entire area clickable).",
+        ],
+        exercise: "Build a responsive profile header component inside a Scaffold that nests Column, Row, and an image avatar with border and badge overlays.",
+        questions: [
+          { q: "What are the three main phases of Jetpack Compose rendering?", h: "1. Composition (runs composable functions to build the UI tree); 2. Layout (measures and positions nodes); 3. Drawing (draws pixels on the canvas)." },
+          { q: "Why does the order of Modifiers matter in Compose? Give an example.", h: "Modifiers are applied sequentially. Modifier.padding(16.dp).clickable { } leaves the padded border unclickable; Modifier.clickable { }.padding(16.dp) includes the padding in the click target." },
+          { q: "What is the role of the @Composable annotation to the Kotlin compiler plugin?", h: "It transforms the function signature to accept hidden Compose runtime slots (Composer) and changes its return type to emit nodes into the Composition tree." }
+        ]
+      },
+      {
+        day: 10, phase: 2, phaseName: "Jetpack Compose", title: "State, Remember, & Recomposition",
+        concepts: [
+          "Recomposition mechanics: How Compose re-executes composable functions when observed State<T> changes while skipping unaffected sibling nodes.",
+          "remember vs rememberSaveable: Storing objects across recompositions vs persisting state across Android configuration changes and process death via SavedStateRegistry.",
+          "State Hoisting: Pattern of moving state to a composable's caller to make the UI stateless, reusable, and easily testable.",
+          "Unidirectional Data Flow (UDF): Events flow upward (callbacks) and UI state flows downward (immutable data models)."
+        ],
+        exercise: "Create a stateless CounterDisplay component with hoisted state, tested by a parent stateful CounterScreen.",
+        questions: [
+          { q: "What causes a Composable function to trigger recomposition?", h: "Reading a SnapshotState (such as mutableStateOf or StateFlow.collectAsStateWithLifecycle) whose value has mutated since the last composition." },
+          { q: "What is the difference between remember { mutableStateOf() } and rememberSaveable { mutableStateOf() }?", h: "remember preserves state only across recompositions; rememberSaveable serializes state across Activity recreation (screen rotation) and system-initiated process death." },
+          { q: "Why is State Hoisting considered best practice in Compose architecture?", h: "It decouples UI appearance from state ownership, making components stateless, pure, testable, and previewable in Android Studio." }
+        ]
+      },
+      {
+        day: 11, phase: 2, phaseName: "Jetpack Compose", title: "Dynamic Lists: LazyColumn & Performance",
+        concepts: [
+          "LazyColumn & LazyRow architecture: Compose equivalent to RecyclerView without adapters, view holders, or manual diffing.",
+          "Item identity via keys: Using items(list, key = { it.id }) to give items persistent keys across insertions, deletions, and animations.",
+          "LazyListState: Observing scroll position, firstVisibleItemIndex, and implementing programmatic scrolling via animateScrollToItem.",
+          "Sticky headers and contentPadding vs Modifiers: Preventing list content from being clipped behind navigation bars."
+        ],
+        exercise: "Build an infinite scroll feed using LazyColumn with unique keys, item deletion animations, and sticky date headers.",
+        questions: [
+          { q: "What catastrophic performance issue happens if you omit the 'key' parameter in LazyColumn items()?", h: "Without stable keys, deleting or reordering an item forces Compose to recompose every single visible row instead of simply animating the moved item." },
+          { q: "Why should you use 'contentPadding' on LazyColumn instead of Modifier.padding()?", h: "contentPadding adds breathing room at the edges without clipping scrolling items as they scroll beneath the transparent system navigation or status bars." },
+          { q: "How does LazyColumn reuse UI nodes compared to RecyclerView ViewHolders?", h: "RecyclerView recycles View objects in memory; Compose discards and recreates composition subtrees, relying on lightweight memory allocation and smart skipping." }
+        ]
+      },
+      {
+        day: 12, phase: 2, phaseName: "Jetpack Compose", title: "Side Effects I: LaunchedEffect & Coroutine Scope",
+        concepts: [
+          "What is a Side Effect in Compose: Any code execution that escapes the scope of a composable function (network call, toast, analytics).",
+          "LaunchedEffect(key): Launching coroutines bound to the Composable lifecycle that auto-cancel and restart when key arguments mutate.",
+          "rememberCoroutineScope: Obtaining a CoroutineScope bound to the Composition point to safely launch jobs from user events (button clicks).",
+          "rememberUpdatedState: Capturing the latest callback or value inside long-running effects without triggering an effect restart."
+        ],
+        exercise: "Build an auto-dismissing banner using LaunchedEffect(Unit) and delay(3000), using rememberUpdatedState to invoke the latest onDismiss callback.",
+        questions: [
+          { q: "When should you use LaunchedEffect vs rememberCoroutineScope?", h: "LaunchedEffect is for calls triggered by entering the composition (or key changes); rememberCoroutineScope is for launching coroutines from user callbacks (like onClick)." },
+          { q: "What happens to a coroutine running inside LaunchedEffect when the composable leaves composition?", h: "The coroutine is automatically and immediately cancelled via structured concurrency." },
+          { q: "Why is rememberUpdatedState needed when passing lambdas to a LaunchedEffect?", h: "It lets a long-running effect access updated lambda properties without restarting the effect when the parent recomposes." }
+        ]
+      },
+      {
+        day: 13, phase: 2, phaseName: "Jetpack Compose", title: "Side Effects II: DisposableEffect & DerivedState",
+        concepts: [
+          "DisposableEffect: Handling side effects that require explicit cleanup (registering/unregistering BroadcastReceivers, sensor listeners, lifecycle observers).",
+          "onDispose { }: The required teardown block guaranteed to execute when the key changes or the composable leaves the tree.",
+          "SideEffect: Publishing Compose state updates to non-Compose external objects (e.g., updating Firebase analytics after every successful recomposition).",
+          "derivedStateOf: Optimizing frequent state changes (e.g., scroll offsets) to emit only when calculated threshold conditions flip boolean states."
+        ],
+        exercise: "Register an Android LifecycleEventObserver inside a DisposableEffect and log Activity onPause/onResume lifecycle events safely.",
+        questions: [
+          { q: "What is the primary purpose of DisposableEffect?", h: "To manage side effects that require paired setup and teardown, guaranteeing cleanup via the onDispose block when leaving composition." },
+          { q: "How does derivedStateOf prevent excessive recomposition?", h: "It observes rapidly changing inputs (like scroll pixels) and only triggers recomposition when the resulting computed property (like 'isScrolledPastTop') actually changes value." },
+          { q: "What is the difference between LaunchedEffect and SideEffect?", h: "LaunchedEffect runs suspending coroutines tied to lifecycle keys; SideEffect runs non-suspending code synchronously after EVERY successful recomposition." }
+        ]
+      },
+      {
+        day: 14, phase: 2, phaseName: "Jetpack Compose", title: "Compose Stability & Performance Optimization",
+        concepts: [
+          "Smart Recomposition: Skipping composables whose input parameters are proven stable and haven't mutated.",
+          "Stability system: Primitive types, String, and functional types are inherently stable; standard collections (List, Set, Map) are treated as unstable by default.",
+          "@Immutable and @Stable annotations: Marking data models to promise the compiler that properties will never change or will notify observers.",
+          "Unstable lambdas pitfall: Passing inline lambdas capturing local variables vs method references or remembered lambdas."
+        ],
+        exercise: "Run the Compose Compiler Metrics report (./gradlew assembleRelease -PcomposeCompilerMetrics=true) and resolve unstable classes using @Immutable.",
+        questions: [
+          { q: "Why does passing a standard 'List<Item>' cause a Composable to be considered unskippable?", h: "List is an interface in Kotlin that could be backed by a mutable list (ArrayList) whose contents change without changing the reference, so the compiler treats it as unstable." },
+          { q: "What is the difference between @Immutable and @Stable?", h: "@Immutable promises properties will never change after construction; @Stable allows mutation as long as public properties notify the Compose runtime when changed." },
+          { q: "How do you inspect whether a composable is skippable or restarting?", h: "By generating Compose Compiler Metrics reports or using the Android Studio Layout Inspector to view recomposition and skip counts." }
+        ]
+      },
+      {
+        day: 15, phase: 2, phaseName: "Jetpack Compose", title: "Navigation Compose & Type Safety",
+        concepts: [
+          "NavHost, NavController, and NavGraphBuilder: Building client-side routing trees in pure Compose.",
+          "Type-Safe Navigation: Defining routes with @Serializable Kotlin data classes/objects instead of fragile string URL paths.",
+          "Passing complex arguments: Handling parcels, primitives, and why large data models should be fetched by ID from repositories rather than passed in navigation bundles.",
+          "Back stack management: popUpTo, inclusive = true, launchSingleTop to avoid duplicate screens on rapid button clicks."
+        ],
+        exercise: "Build a 2-screen navigation flow using Navigation Compose passing an itemId via a serializable route, handling back navigation.",
+        questions: [
+          { q: "Why should you pass IDs rather than full data models in Compose navigation routes?", h: "Passing large objects creates parcel size limit issues, causes stale cache copies, and violates single source of truth (SSOT) principles." },
+          { q: "How does launchSingleTop prevent screen duplication in Android Navigation?", h: "It ensures that if the destination is already at the top of the back stack, another instance will not be launched on top." },
+          { q: "How do you scope a ViewModel to a specific navigation backstack entry?", h: "By passing the NavBackStackEntry into hiltViewModel(viewModelStoreOwner = backStackEntry) so the ViewModel survives only while that sub-graph is active." }
+        ]
+      },
+      {
+        day: 16, phase: 2, phaseName: "Jetpack Compose", title: "Material 3 Theming & Design Systems",
+        concepts: [
+          "MaterialTheme token hierarchy: colorScheme, typography, shapes.",
+          "Dynamic Color: Extracting user wallpaper palette tokens on Android 12+ via dynamicDarkColorScheme / dynamicLightColorScheme.",
+          "CompositionLocal: Passing implicit data down the composition tree without plumbing parameters through every function (LocalContext, LocalContentColor).",
+          "Creating custom CompositionLocals: CompositionLocalOf vs staticCompositionLocalOf (static triggers full tree invalidation on change)."
+        ],
+        exercise: "Create a custom design system with custom brand colors using CompositionLocalProvider and toggle between Light and Dark mode.",
+        questions: [
+          { q: "What is CompositionLocal and what problem does it solve?", h: "It provides a way to pass data implicitly through the UI tree without manually passing parameters through every intermediate Composable function." },
+          { q: "What is the difference between compositionLocalOf and staticCompositionLocalOf?", h: "staticCompositionLocalOf is for values that rarely change; when mutated, it forces the entire subtree to recompose. compositionLocalOf tracks reads and only recomposes nodes that read the value." },
+          { q: "How do you support Dark Theme natively in Jetpack Compose?", h: "By checking isSystemInDarkTheme() and selecting either lightColorScheme() or darkColorScheme() to feed into MaterialTheme." }
+        ]
+      },
+      {
+        day: 17, phase: 2, phaseName: "Jetpack Compose", title: "Phase 2 Drill & Compose Architecture Review",
+        concepts: [
+          "Consolidating Compose mechanics: Comparing Compose layout performance with legacy XML View hierarchy (flat tree vs nested RelativeLayouts).",
+          "Interoperability: AndroidView (hosting legacy XML views in Compose) and ComposeView (hosting Compose in legacy Fragments/XML).",
+          "Testing Compose: createComposeRule, onNodeWithText, performClick, assertIsDisplayed.",
+          "Handling Keyboard & Insets: WindowInsets, imePadding, systemBarsPadding."
+        ],
+        exercise: "Write a Compose UI test asserting that clicking a counter button updates text on screen using composeTestRule.",
+        questions: [
+          { q: "How does Compose eliminate the 7-level deep view hierarchy performance penalty common in XML?", h: "Compose has a flat layout system where custom layouts measure children in a single pass (O(N)), preventing exponential multi-measure penalties." },
+          { q: "How do you embed a legacy Android View (like a MapView or CameraPreview) inside a Composable?", h: "Using the AndroidView composable, which instantiates and holds the legacy View via a factory lambda and updates it via an update lambda." },
+          { q: "How do you handle keyboard IME adjustments in Compose without resizing the entire window?", h: "Apply Modifier.imePadding() or Modifier.windowInsetsPadding(WindowInsets.ime) to the relevant scrollable container." }
+        ]
+      },
+
+      // PHASE 3
+      {
+        day: 18, phase: 3, phaseName: "Hilt DI", title: "Inversion of Control & Hilt Foundations",
+        concepts: [
+          "Inversion of Control (IoC) & Dependency Injection: Decoupling object creation from object business logic.",
+          "Compile-time vs Runtime DI: Why Hilt (annotation-driven code generation via Dagger) is superior to reflection-heavy runtime service locators.",
+          "@HiltAndroidApp: Initializing the application-level dependency container.",
+          "@AndroidEntryPoint: Injecting dependencies into Android lifecycle classes (Activities, Fragments, Views, Services)."
+        ],
+        exercise: "Add Hilt to an Android project, annotate the Application and MainActivity, and constructor-inject an AnalyticsHelper class.",
+        questions: [
+          { q: "What does the @HiltAndroidApp annotation actually do during the compilation process?", h: "It triggers Hilt's code generator to create a base application class that acts as the root dependency container (SingletonComponent)." },
+          { q: "Why is compile-time dependency injection preferred over runtime reflection in Android?", h: "Compile-time DI fails during Gradle build if dependencies are missing, guaranteeing zero runtime reflection overhead and preventing runtime crash surprises." },
+          { q: "Can you use constructor injection on Android Activities directly? Why or why not?", h: "No, because the Android OS instantiates Activities via reflection; you must use field injection annotated with @Inject inside @AndroidEntryPoint classes." }
+        ]
+      },
+      {
+        day: 19, phase: 3, phaseName: "Hilt DI", title: "Hilt Modules: @Provides vs @Binds",
+        concepts: [
+          "@Module & @InstallIn: Declaring dependency delivery packages and scoping them to specific Hilt components.",
+          "@Provides: Instantiating third-party classes you do not own (Retrofit, Room, OkHttpClient, Gson).",
+          "@Binds: Providing an interface implementation without creating new constructor call boilerplate.",
+          "Abstract module optimization: Why @Binds must reside in an abstract class or interface for compilation speed."
+        ],
+        exercise: "Create a NetworkModule providing Retrofit, and a RepositoryModule with an abstract @Binds method binding UserRepository to UserRepositoryImpl.",
+        questions: [
+          { q: "What is the technical and performance difference between @Provides and @Binds?", h: "@Provides generates an instantiated factory class that executes code; @Binds is an abstract method that tells Dagger to directly substitute the implementation type without extra code generation." },
+          { q: "What happens if you declare @InstallIn(SingletonComponent::class) vs @InstallIn(ActivityComponent::class)?", h: "SingletonComponent lives for the app's entire lifespan; ActivityComponent is created when the Activity is created and destroyed when the Activity is destroyed." },
+          { q: "When must you use @Provides instead of @Binds?", h: "When configuring third-party library classes you don't own (like Retrofit builders), or when initialization requires complex procedural builder setup." }
+        ]
+      },
+      {
+        day: 20, phase: 3, phaseName: "Hilt DI", title: "Scopes, Lifecycles, & Memory Leaks",
+        concepts: [
+          "Hilt Scope Hierarchy: SingletonComponent (@Singleton), ActivityRetainedComponent (@ActivityRetainedScoped), ActivityComponent (@ActivityScoped), ViewModelComponent (@ViewModelScoped).",
+          "Unscoped dependencies: Why unscoped dependencies instantiate a brand new object every single time they are injected.",
+          "Memory leak vectors: Injecting short-lived objects (Activity Context) into long-lived singletons.",
+          "@ApplicationContext vs @ActivityContext: Using qualifiers to prevent leaking Activity instances."
+        ],
+        exercise: "Deliberately inject an @ActivityContext into a @Singleton class to observe compile-time failure, then fix it using @ApplicationContext.",
+        questions: [
+          { q: "What error occurs if you try to inject an @ActivityScoped dependency into a @Singleton component?", h: "Hilt compilation fails with a scoping error because a long-lived component cannot depend on a shorter-lived component." },
+          { q: "What is the lifespan of @ActivityRetainedScoped compared to @ActivityScoped?", h: "@ActivityRetainedScoped survives configuration changes (like screen rotations), whereas @ActivityScoped is destroyed and recreated with every Activity recreation." },
+          { q: "Are un-scoped dependencies bad for performance?", h: "Not necessarily. If the object is lightweight and stateless, creating it on demand is often better than keeping unnecessary memory permanently allocated in the heap." }
+        ]
+      },
+      {
+        day: 21, phase: 3, phaseName: "Hilt DI", title: "Qualifiers, Named Annotations, & Multi-Bindings",
+        concepts: [
+          "Disambiguating dependencies: Supplying multiple instances of the exact same class (e.g., Authorized vs Public OkHttpClient).",
+          "@Qualifier custom annotations: Creating type-safe, refactor-proof qualifiers with @Retention(AnnotationRetention.BINARY).",
+          "@Named string qualifiers: Risks of typos and maintenance debt compared to custom qualifiers.",
+          "Injecting Collections via Multibindings: @IntoSet, @IntoMap for plugin-style architectures."
+        ],
+        exercise: "Define two custom annotations @AuthOkHttpClient and @LoggingOkHttpClient and inject them into different service instances.",
+        questions: [
+          { q: "Why should you avoid using @Named(\"...\") in large production applications?", h: "Strings are prone to silent typos and are not checked strictly by refactoring tools; custom @Qualifier annotations provide type-safe compile-time checking." },
+          { q: "How do you provide different base URLs to different Retrofit instances using Hilt?", h: "Create custom qualifiers (e.g., @UserApi and @PaymentApi) and annotate both the @Provides methods and the injection targets." },
+          { q: "What is Dagger multibinding?", h: "A mechanism that allows multiple modules to contribute items into a shared Set or Map that can be injected as a collection elsewhere." }
+        ]
+      },
+      {
+        day: 22, phase: 3, phaseName: "Hilt DI", title: "Hilt in ViewModels & Compose Integration",
+        concepts: [
+          "@HiltViewModel & constructor injection: How Hilt injects dependencies into ViewModels without manual ViewModelProvider factories.",
+          "SavedStateHandle injection: Automatically restoring ViewModel parameters across process death.",
+          "hiltViewModel() within Composable screens: Resolving ViewModel instances scoped to the current navigation route.",
+          "Testing Hilt apps: @HiltAndroidTest, HiltTestApplication, and replacing real modules with test modules via @TestInstallIn."
+        ],
+        exercise: "Inject a SavedStateHandle into a @HiltViewModel to read navigation arguments and inject that ViewModel into a Composable screen.",
+        questions: [
+          { q: "How does @HiltViewModel eliminate the boilerplate of legacy ViewModelProvider.Factory?", h: "Hilt generates the ViewModel factory under the hood, mapping requested dependencies directly into the constructor at compile time." },
+          { q: "What does SavedStateHandle provide inside a Hilt ViewModel?", h: "It gives key-value access to saved instance state and navigation arguments, persisting values even across system process death." },
+          { q: "How do you swap a production network module with a fake test module in Hilt instrumented tests?", h: "Annotate the test module with @TestInstallIn(components = [...], replaces = [ProductionModule::class])." }
+        ]
+      },
+
+      // PHASE 4
+      {
+        day: 23, phase: 4, phaseName: "Architecture & Data", title: "Modern Networking: Retrofit & OkHttp",
+        concepts: [
+          "Retrofit 2.9+ suspending functions: Direct execution without Call<T> or RxJava wrappers.",
+          "OkHttp Interceptor chain: Application Interceptors vs Network Interceptors (caching headers vs transport byte monitoring).",
+          "Kotlinx.Serialization vs Moshi vs Gson: Why Kotlinx Serialization handles Kotlin default parameter values and null safety natively.",
+          "Token Refresh with OkHttp Authenticator: Handling 401 Unauthorized responses with synchronized atomic refresh calls."
+        ],
+        exercise: "Write an OkHttp Authenticator that catches 401 errors, calls a refreshToken API endpoint, and retries the original request with the new JWT.",
+        questions: [
+          { q: "What is the difference between an OkHttp Application Interceptor and a Network Interceptor?", h: "Application interceptors run once per request before redirects/retries; Network interceptors run across every network hop, observing redirects and raw wire traffic." },
+          { q: "Why can Gson break Kotlin null-safety at runtime?", h: "Gson uses Java Unsafe reflection to bypass Kotlin constructors; if an incoming JSON lacks a non-nullable field, Gson writes null into it, causing NullPointerExceptions later." },
+          { q: "How does OkHttp's Authenticator prevent infinite loops when refreshing authentication tokens?", h: "By inspecting if response.request.header(\"Authorization\") already contains the failed token; if so, return null to abort the retry loop." }
+        ]
+      },
+      {
+        day: 24, phase: 4, phaseName: "Architecture & Data", title: "Local Persistence with Room Database",
+        concepts: [
+          "Room components: @Entity, @Dao, @Database, and SQLite underlying architecture.",
+          "Reactive queries: Returning Flow<List<Entity>> from @Query methods to automatically push updates on DB table mutation.",
+          "Database Migrations: Automated migrations vs manual Migration(1, 2) objects, handling SQLite ALTER TABLE without data loss.",
+          "Room threading rules: Why Room forbids main-thread queries and automatically executes suspend queries on an internal background executor."
+        ],
+        exercise: "Create a Room entity with auto-generated primary keys and a DAO method returning Flow<List<Entity>>, testing reactive emission upon insert.",
+        questions: [
+          { q: "How does Room notify observers of Flow<List<T>> when a table row changes?", h: "Room's InvalidationTracker monitors table modification triggers and re-queries the DAO query on an internal executor, emitting the new list downstream." },
+          { q: "What happens if you bump the Room version without providing a Migration or fallbackToDestructiveMigration?", h: "The app crashes on startup with an IllegalStateException: 'Room cannot verify the data integrity'." },
+          { q: "Why should you never write 'fallbackToDestructiveMigration()' in a production release build?", h: "It silently wipes the entire user SQLite database and deletes all stored local data on schema mismatch." }
+        ]
+      },
+      {
+        day: 25, phase: 4, phaseName: "Architecture & Data", title: "Offline-First Single Source of Truth (SSOT)",
+        concepts: [
+          "Single Source of Truth (SSOT) architecture: The UI only observes the local database, never raw network API responses.",
+          "Network-Bound Resource pattern: Emit cached DB data -> Fetch remote API in background -> Write remote data to Room -> Room triggers fresh emission.",
+          "Handling sync conflicts: Last-Write-Wins vs client-server timestamp comparison.",
+          "Optimistic UI updates: Mutating local Room state immediately while queueing background network sync."
+        ],
+        exercise: "Implement an offline-first repository method: fun getArticles(): Flow<Resource<List<Article>>> that emits Room cache before syncing from API.",
+        questions: [
+          { q: "What is the core philosophy of an Offline-First architecture in mobile apps?", h: "The local database is the single source of truth for UI display; network fetches act only as synchronization mechanisms that update the database." },
+          { q: "What are the failure edge cases of the Network-Bound Resource pattern?", h: "Handling pagination sync, resolving conflicts when local offline edits conflict with remote changes, and clearing stale cache entries." },
+          { q: "How do optimistic UI updates work in an offline-capable Android app?", h: "The local database is updated immediately and displayed on screen with a 'pending' flag while a background worker pushes changes to the cloud API." }
+        ]
+      },
+      {
+        day: 26, phase: 4, phaseName: "Architecture & Data", title: "Clean Architecture & MVI Pattern",
+        concepts: [
+          "Clean Architecture layers: Presentation (UI/ViewModel) -> Domain (Entities/UseCases) -> Data (Repositories/DataSources).",
+          "Dependency Rule: Dependencies must only point inward; Domain layer has 0 Android framework imports (pure Kotlin).",
+          "MVI (Model-View-Intent): Single immutable UIState, explicit user Intent/Event actions, and one-off SideEffects (Navigation, Toast).",
+          "Why UseCases? Encapsulating single business rules reusable across multiple ViewModels."
+        ],
+        exercise: "Refactor a screen into MVI: Define sealed interface ScreenIntent, data class ScreenState, and collect state in a Compose screen.",
+        questions: [
+          { q: "Why should the Domain layer in Clean Architecture be free of Android framework dependencies?", h: "It ensures business logic is platform-independent, easily unit testable without Android emulators, and resilient to framework changes." },
+          { q: "What is the key difference between standard MVVM and MVI?", h: "MVVM often exposes multiple independent StateFlow/LiveData properties; MVI unifies everything into a single immutable UIState object driven by unidirectional Intents." },
+          { q: "When is creating a UseCase class considered overkill?", h: "When a UseCase does nothing but forward a call 1-to-1 to a repository without adding validation, transformation, or coordination of multiple repositories." }
+        ]
+      },
+      {
+        day: 27, phase: 4, phaseName: "Architecture & Data", title: "Unit Testing Modern Android Applications",
+        concepts: [
+          "Unit testing stack: JUnit 4/5, MockK (idiomatic Kotlin mocking), Turbine (Flow assertions), Truth / AssertJ.",
+          "Testing Coroutines: Setting test dispatchers via Dispatchers.setMain(testDispatcher), runTest, advanceUntilIdle().",
+          "Testing Flow with Turbine: flow.test { awaitItem(), awaitComplete() }.",
+          "Fakes vs Mocks: Why writing memory-backed Fake repositories is superior to brittle MockK method stubs."
+        ],
+        exercise: "Write a unit test for an MVI ViewModel using Turbine to assert that an Intent triggers Loading state followed by Success state.",
+        questions: [
+          { q: "Why do unit tests crash with 'Method getMainLooper in android.os.Looper not mocked' without a TestDispatcher?", h: "Android framework classes are stubs in local JVM tests; Dispatchers.Main requires an initialized Looper unless replaced via Dispatchers.setMain()." },
+          { q: "What is Turbine and why is it used for testing Kotlin Flows?", h: "Turbine provides a clean DSL to synchronously assert sequential Flow emissions, cancellations, and errors without manual collection loops." },
+          { q: "Why do Android architecture guidelines recommend Fake implementations over Mocking libraries for Repositories?", h: "Fakes behave like real working in-memory components, making tests robust against internal refactoring, whereas mocks break whenever implementation details change." }
+        ]
+      },
+
+      // PHASE 5
+      {
+        day: 28, phase: 5, phaseName: "System Design & Polish", title: "Android System Design Fundamentals",
+        concepts: [
+          "High-level architecture interview framework: Requirements clarification -> Data entities -> API contract -> Client storage -> UI state machine -> Edge cases.",
+          "Designing an Infinite Scroll Image Feed: Memory caching (LruCache) vs Disk caching, viewport prefetching, image downsizing/sampling (BitmapFactory.Options).",
+          "Offline Sync Engine: WorkManager constraints (NetworkType.CONNECTED, Charging), exponential backoff retry policies.",
+          "Push Notifications architecture: FCM payload routing, notification channels, handling background vs foreground payloads."
+        ],
+        exercise: "Draw an architecture diagram for an offline-capable chat app showing WebSocket connection, Room message caching, and WorkManager retry.",
+        questions: [
+          { q: "How would you design an image loading library like Coil/Glide from scratch?", h: "3-tier cache: Memory (LruCache), Disk (OkHttp disk cache), Network; downsample bitmaps to match ImageView dimensions; cancel image tasks when views scroll out of view." },
+          { q: "Why should you use WorkManager for background sync instead of CoroutineScope or Foreground Services?", h: "WorkManager guarantees execution across app exit and device reboot, respecting OS battery optimizations (Doze mode) and network constraints." },
+          { q: "How do you handle pagination in an app where items can be inserted at the top in real time?", h: "Use cursor-based (keyset) pagination instead of offset/limit pagination to avoid duplicate or skipped items when new items arrive." }
+        ]
+      },
+      {
+        day: 29, phase: 5, phaseName: "System Design & Polish", title: "Memory Leaks, Profiling, & ProGuard/R8",
+        concepts: [
+          "Memory leaks in Android: Static context references, un-cancelled coroutine jobs, forgotten listeners/callbacks.",
+          "LeakCanary internal mechanics: WeakReference and ObjectWatcher tracking Activity/Fragment destruction via ReferenceQueue.",
+          "Android Studio Profiler: Tracking Heap Dumps, native memory allocations, and identifying memory churn causing GC pauses.",
+          "ProGuard / R8 optimization: Minification, dead code stripping, obfuscation, and writing custom -keep rules for serialization."
+        ],
+        exercise: "Create a deliberate memory leak using a static View variable, detect it via LeakCanary or Profiler, and fix it.",
+        questions: [
+          { q: "How does LeakCanary detect that an Activity has leaked?", h: "It wraps the destroyed Activity in a WeakReference with a ReferenceQueue; if the reference isn't enqueued after an explicit GC, it dumps the heap and analyzes the shortest path to GC Root." },
+          { q: "What is the difference between ProGuard and R8?", h: "ProGuard is an older standalone optimizer; R8 is Google's integrated compiler that does desugaring, shrinking, optimization, and dexing in a single pass." },
+          { q: "Why do serialization libraries require ProGuard -keep rules?", h: "R8 renames class field names to 'a', 'b', etc., breaking JSON field reflection unless class fields and annotations are preserved." }
+        ]
+      },
+      {
+        day: 30, phase: 5, phaseName: "System Design & Polish", title: "Mock Interview Drill & Portfolio Finalization",
+        concepts: [
+          "Pitching your project to engineering hiring managers: Talking through technical trade-offs, architecture decisions, and edge case resilience.",
+          "Core competencies summary: Modern Android (MAD), Kotlin First, Declarative UI, Clean Architecture, Unidirectional Data Flow.",
+          "GitHub README presentation: Architectural flowcharts, tech stack badges, demo GIF, and links to APK releases.",
+          "Behavioral & Technical STAR method: Explaining difficult bugs solved, performance profiling victories, and team collaboration."
+        ],
+        exercise: "Perform a 45-minute timed mock interview where you explain your capstone project's data flow from network API down to Compose pixels.",
+        questions: [
+          { q: "Walk me through how data travels from a remote server to the screen in your modern Android app.", h: "Network -> Retrofit/OkHttp -> Serialization -> Repository -> Room Database -> Flow -> ViewModel UIState -> Compose collectAsStateWithLifecycle -> UI rendering." },
+          { q: "Tell me about a difficult memory leak or performance bottleneck you identified and solved.", h: "Use STAR method: Describe jank/OOM, Profiler diagnosis (e.g., recomposition loop or unclosed stream), the targeted fix, and measurable metric improvement." },
+          { q: "If you had to rewrite your application today, what technical decision would you change and why?", h: "Show mature engineering insight: Discuss library choices (e.g., navigation library hurdles, state management trade-offs, or testing approaches)." }
+        ]
+      }
+    ];
+
+    let currentFilter = 'all';
+    let completedDays = new Set(JSON.parse(localStorage.getItem('android_roadmap_completed_v3') || '[]'));
+    let expandedDays = new Set([1]);
+
+    // Local API Key Handling
+    function getStoredApiKey() {
+      return localStorage.getItem('gemini_study_api_key') || '';
+    }
+
+    function checkKeyStatus() {
+      const key = getStoredApiKey();
+      const statusEl = document.getElementById('keyStatus');
+      const inputEl = document.getElementById('geminiApiKey');
+      if (key && key.trim().length > 10) {
+        statusEl.innerText = "● Key Active & Saved Locally";
+        statusEl.style.color = "#3ddc84";
+        inputEl.value = "••••••••••••••••••••••••••••••••";
+      } else {
+        statusEl.innerText = "● No Key Saved";
+        statusEl.style.color = "#ef4444";
+        inputEl.value = "";
+      }
+    }
+
+    function saveApiKey() {
+      const input = document.getElementById('geminiApiKey').value.trim();
+      if (!input || input.includes('••••')) {
+        alert("Please enter a valid Gemini API key.");
+        return;
+      }
+      localStorage.setItem('gemini_study_api_key', input);
+      checkKeyStatus();
+      alert("API Key saved securely to your browser's local storage!");
+    }
+
+    function clearApiKey() {
+      localStorage.removeItem('gemini_study_api_key');
+      checkKeyStatus();
+      alert("API Key cleared from local storage.");
+    }
+
+    // Call Gemini API
+    async function queryGemini(dayNum, actionType, customText = '') {
+      const key = getStoredApiKey();
+      if (!key) {
+        alert("Please enter and save your Gemini API key at the top of the page first.");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const item = roadmapData.find(d => d.day === dayNum);
+      const respBox = document.getElementById(`ai-resp-${dayNum}`);
+      respBox.style.display = 'block';
+      respBox.innerText = "⏳ Gemini is analyzing this topic...";
+
+      let systemPrompt = `You are a Principal Android Engineer and Staff Technical Interviewer specializing in Modern Android Development (Kotlin, Jetpack Compose, Coroutines, Flow, Hilt, Room, and Clean Architecture).
+The user is studying Day ${item.day}: ${item.title} (Phase: ${item.phaseName}).
+Core Concepts for today: ${item.concepts.join("; ")}.
+Hands-on task: ${item.exercise}.`;
+
+      let userPrompt = "";
+
+      if (actionType === 'explain') {
+        userPrompt = `Please provide a clear, deep-dive explanation of today's core concepts. Include concise production Kotlin code snippets illustrating best practices and common anti-patterns to avoid in technical interviews.`;
+      } else if (actionType === 'interview') {
+        userPrompt = `Act as an interviewer at a top tech company. Ask me a tricky technical interview question about today's concepts: "${item.concepts[0]}". Don't give me the full answer right away; give me the question, 1 small hint, and explain what a candidate must mention to earn a 'Strong Hire' rating.`;
+      } else if (actionType === 'custom') {
+        userPrompt = `Regarding Day ${item.day} (${item.title}): ${customText}`;
+      }
+
+      const fullPrompt = `${systemPrompt}\n\nTask: ${userPrompt}`;
+
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(key)}`;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: fullPrompt }] }]
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error?.message || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        const outputText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+        respBox.innerText = outputText;
+      } catch (err) {
+        respBox.innerText = `❌ Error communicating with Gemini API: ${err.message}\nCheck your API key and network connection.`;
+      }
+    }
+
+    function handleCustomPrompt(dayNum) {
+      const input = document.getElementById(`ai-custom-input-${dayNum}`);
+      const text = input.value.trim();
+      if (!text) return;
+      queryGemini(dayNum, 'custom', text);
+      input.value = '';
+    }
+
+    // State & UI Handlers
+    function saveState() {
+      localStorage.setItem('android_roadmap_completed_v3', JSON.stringify(Array.from(completedDays)));
+      updateMetrics();
+    }
+
+    function toggleDayComplete(dayNum, event) {
+      event.stopPropagation();
+      if (completedDays.has(dayNum)) completedDays.delete(dayNum);
+      else completedDays.add(dayNum);
+      saveState();
+      renderDays();
+    }
+
+    function toggleExpandCard(dayNum) {
+      if (expandedDays.has(dayNum)) expandedDays.delete(dayNum);
+      else expandedDays.add(dayNum);
+      renderDays();
+    }
+
+    function toggleExpandAll() {
+      if (expandedDays.size > 5) expandedDays.clear();
+      else roadmapData.forEach(d => expandedDays.add(d.day));
+      renderDays();
+    }
+
+    function updateMetrics() {
+      const count = completedDays.size;
+      const pct = Math.round((count / 30) * 100);
+      document.getElementById('percentText').innerText = pct + '%';
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('completedCounter').innerText = `${count} of 30 days completed`;
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDays();
+    }
+
+    function resetAll() {
+      if (confirm("Reset all completion progress?")) {
+        completedDays.clear();
+        saveState();
+        renderDays();
+      }
+    }
+
+    function renderDays() {
+      const listEl = document.getElementById('daysList');
+      listEl.innerHTML = '';
+
+      const filtered = roadmapData.filter(item => {
+        if (currentFilter === 'all') return true;
+        return item.phase === currentFilter;
+      });
+
+      filtered.forEach(item => {
+        const isDone = completedDays.has(item.day);
+        const isExpanded = expandedDays.has(item.day);
+        const card = document.createElement('div');
+        card.className = `day-card ${isDone ? 'completed' : ''} ${isExpanded ? 'expanded' : ''}`;
+
+        const qaHtml = item.questions.map(q => `
+          <li>
+            <div class="qa-q">Q: ${q.q}</div>
+            <div class="qa-hint">A: ${q.h}</div>
+          </li>
+        `).join('');
+
+        const conceptsHtml = item.concepts.map(c => `<li>${c}</li>`).join('');
+
+        card.innerHTML = `
+          <div class="card-header" onclick="toggleExpandCard(${item.day})">
+            <div class="card-meta">
+              <div class="checkbox-wrap" onclick="toggleDayComplete(${item.day}, event)">
+                <div class="custom-checkbox">${isDone ? '✓' : ''}</div>
+              </div>
+              <span class="day-tag">Day ${item.day < 10 ? '0' + item.day : item.day}</span>
+              <span class="day-title">${item.title}</span>
+            </div>
+            <div class="header-right">
+              <span class="phase-badge p-${item.phase}">Phase ${item.phase}</span>
+              <span class="chevron">▼</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="detail-block">
+              <div class="detail-heading">Core Concepts to Master</div>
+              <ul class="concept-list">${conceptsHtml}</ul>
+            </div>
+            <div class="detail-block">
+              <div class="detail-heading">Hands-on Implementation Task</div>
+              <div class="hands-on-box">${item.exercise}</div>
+            </div>
+            <div class="detail-block">
+              <div class="detail-heading">Interview Screening & Deep-Dive Questions</div>
+              <div class="qa-box">
+                <ul class="qa-list">${qaHtml}</ul>
+              </div>
+            </div>
+            
+            <!-- Gemini Interactive Bar -->
+            <div class="ai-action-bar">
+              <div class="ai-bar-title">✨ Gemini Study Assistant for Day ${item.day}</div>
+              <div class="ai-buttons-row">
+                <button class="ai-chip-btn" onclick="queryGemini(${item.day}, 'explain')">📖 Deep Explain Concepts</button>
+                <button class="ai-chip-btn" onclick="queryGemini(${item.day}, 'interview')">🎯 Mock Interview Question</button>
+              </div>
+              <div class="ai-custom-prompt-row">
+                <input type="text" id="ai-custom-input-${item.day}" class="ai-custom-input" placeholder="Ask Gemini a specific question about Day ${item.day}..." onkeydown="if(event.key==='Enter') handleCustomPrompt(${item.day})" />
+                <button class="ai-chip-btn" onclick="handleCustomPrompt(${item.day})">Ask</button>
+              </div>
+              <div class="ai-response-box" id="ai-resp-${item.day}"></div>
+            </div>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    // Init
+    checkKeyStatus();
+    updateMetrics();
+    renderDays();
+  </script>
+</body>
+</html>
